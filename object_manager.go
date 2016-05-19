@@ -179,13 +179,16 @@ func GetIPAddressFromRef(ref string) string {
 	return ""
 }
 
-func (objMgr *ObjectManager) AllocateIP(netview string, cidr string, macAddress string) (*FixedAddress, error) {
+func (objMgr *ObjectManager) AllocateIP(netview string, cidr string, macAddress string, vmID string) (*FixedAddress, error) {
 	if len(macAddress) == 0 {
 		macAddress = "00:00:00:00:00:00"
 	}
 
 	ea := objMgr.getBasicEA(true)
-	ea["VM ID"] = "N/A"
+	if vmID == "" {
+		vmID = "N/A"
+	}
+	ea["VM ID"] = vmID
 
 	fixedAddr := NewFixedAddress(FixedAddress{
 		NetviewName: netview,
